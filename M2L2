@@ -1,0 +1,87 @@
+import discord
+from discord.ext import commands
+import random
+
+intents = discord.Intents.default()
+intents.message_content = True
+
+bot = commands.Bot(command_prefix='$', intents=intents)
+
+@bot.event
+async def on_ready():
+    print(f'Bot listo como {bot.user}')
+
+# Base simple de residuos
+reciclables = [
+    "botella de plástico",
+    "lata",
+    "papel",
+    "cartón",
+    "botella de vidrio"
+]
+
+no_reciclables = [
+    "pañal",
+    "servilleta sucia",
+    "papel higiénico",
+    "colilla de cigarro"
+]
+
+especiales = [
+    "pila",
+    "batería",
+    "electrónico",
+    "medicamento"
+]
+
+@bot.command()
+async def residuo(ctx, *, objeto: str):
+    objeto = objeto.lower()
+
+    if objeto in reciclables:
+        await ctx.send(f" '{objeto}' se puede RECICLAR.")
+    
+    elif objeto in no_reciclables:
+        await ctx.send(f" '{objeto}' debe ir a la BASURA común.")
+    
+    elif objeto in especiales:
+        await ctx.send(f" '{objeto}' requiere un PUNTO DE RECICLAJE ESPECIAL.")
+    
+    else:
+        await ctx.send(" No estoy seguro. Intenta con otro objeto o sé más específico.")
+
+@bot.command()
+async def consejo(ctx):
+    tips = [
+        "Reduce el uso de plásticos de un solo uso.",
+        "Reutiliza bolsas y envases siempre que puedas.",
+        "Separa los residuos en casa.",
+        "Limpia los envases antes de reciclarlos."
+        "Elegí productos hechos con material reciclado"
+        "Doná lo que ya no uses en buen estado"
+        "Informate sobre los puntos de reciclaje en tu zona"
+    ]
+    await ctx.send(random.choice(tips))
+
+@bot.event
+async def on_message(message):
+    if message.author == bot.user:
+        return
+
+    if message.content.lower() == "hola":
+        await message.channel.send(
+            "🌱 ¡Hola! ¿Cómo estás?\n\n"
+            "Me alegra que quieras aprender sobre reciclaje ♻️\n"
+            "Estoy acá para ayudarte a clasificar residuos.\n\n"
+            "📝 Escribí un objeto con el comando:\n"
+            "`$residuo <objeto>`\n\n"
+            "Por ejemplo:\n"
+            "`$residuo botella`\n\n"
+            "💡 Yo te diré si se recicla, si va a la basura o si necesita un tratamiento especial."
+            "Si quieres algun consejo usa el comando:$consejo "
+        )
+
+    
+    await bot.process_commands(message)
+
+bot.run("escribe tu token")

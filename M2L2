@@ -63,6 +63,26 @@ async def consejo(ctx):
     ]
     await ctx.send(random.choice(tips))
 
+@bot.command()
+async def lista(ctx):
+    await ctx.send(
+        "📋 Tipos de residuos que puedo reconocer:\n\n"
+        "♻️ Reciclables: botella de plástico, lata, papel, cartón, botella de vidrio\n"
+        "🗑️ No reciclables: pañal, servilleta sucia, papel higiénico, colilla de cigarro\n"
+        "⚠️ Especiales: pila, batería, electrónico, medicamento\n\n"
+        "Usa: `$residuo <objeto>`"
+    )
+
+@bot.command()
+async def eco(ctx):
+    mensajes = [
+        "🌎 Cada pequeño cambio cuenta.",
+        "♻️ Reciclar hoy es cuidar el mañana.",
+        "🌱 Menos basura, más vida.",
+        "💚 El planeta te necesita."
+    ]
+    await ctx.send(random.choice(mensajes))
+
 @bot.event
 async def on_message(message):
     if message.author == bot.user:
@@ -84,4 +104,4 @@ async def on_message(message):
     
     await bot.process_commands(message)
 
-bot.run("escribe tu token")
+bot.run("")
